@@ -5,6 +5,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import org.testng.Assert;
 
 /**
  * Created by QA on 05.08.2017.
@@ -21,7 +22,8 @@ public class GoogleSearchPage extends BasePage {
         googleSearchField.sendKeys(whatNeedToSearch);
         googleSearchButton.click();
         //googleSearchField.sendKeys(Keys.ENTER);
-        boolean resultPageTitle = driver.getTitle().contains("ITEA - Google Search");
+        boolean resultPageTitle = driver.getTitle().contains("ITEA - Поиск в Google");
+        //Assert.assertEquals(driver.getTitle(), "ITEA - Google Search");
         if (resultPageTitle==false){
             return (T) this ;
         } else return (T) new GoogleResultOfSearchPage(driver);

@@ -9,6 +9,8 @@ import org.testng.annotations.Test;
 import page.GoogleResultOfSearchPage;
 import page.GoogleSearchPage;
 
+import java.util.List;
+
 /**
  * Created by QA on 05.08.2017.
  */
@@ -33,11 +35,25 @@ public class MainPageTest {
     @Test
     public void testSearchIteaSiteInGoogle(){
 
+        int expectedSearchResultsOnFirstPage =13;
+
         GoogleSearchPage googleSearchPage = new GoogleSearchPage(driver);
 
         GoogleResultOfSearchPage googleResultOfSearchPage = googleSearchPage.search("ITEA");
 
         Assert.assertTrue(googleResultOfSearchPage.isResultOfSearchPageLoaded(), "No search result");
+
+        Assert.assertEquals(googleResultOfSearchPage.getResultSearchCount(),expectedSearchResultsOnFirstPage, "Expected numbers of search result isnt same to Actual");
+
+        List<String> searchItemList  = googleResultOfSearchPage.getTextListOfEachResultSearchItem();
+
+        for (String eachElementFromSearchList: searchItemList) {
+            boolean ifcontains = eachElementFromSearchList.contains("ITEA");
+            Assert.assertTrue(ifcontains, "Not all search results contains search term");
+        }
+
+
+
 
 
 
