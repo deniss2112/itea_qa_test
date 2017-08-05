@@ -1,2 +1,2 @@
 # itea_qa_test
-Exsam
+QA Automation Exam
