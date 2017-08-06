@@ -1,5 +1,6 @@
 package test;
 
+import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.testng.Assert;
@@ -11,20 +12,20 @@ import page.GoogleSearchPage;
 
 import java.util.List;
 
+
+
 /**
- * Created by QA on 05.08.2017.
+ * GoogleSearchTest class describe Tests methods for Google search
  */
-public class MainPageTest {
+public class GoogleSearchTest {
     /**
      * Declaration variable driver
      */
     private WebDriver driver;
 
     /**
-     * Common method that performed before each test method, to open browser window,
-     * setup it by window size and go to site URL
+     * Common method that performed before each test method, to open browser window and go to site URL
      */
-    // Run this method before the first test method in the current class is invoked
     @BeforeMethod
     public void setUp(){
         System.setProperty("webdriver.gecko.driver","src/test/resources/geckodriver.exe");
@@ -32,10 +33,13 @@ public class MainPageTest {
         driver.get("https://www.google.com.ua/");
     }
 
+    /**
+     * Common test method to testing Google search for a given phrase, in this case -ITEA
+     */
     @Test
     public void testSearchIteaSiteInGoogle(){
 
-        int expectedSearchResultsOnFirstPage =13;
+        int expectedSearchResultsOnFirstPage =10;
 
         GoogleSearchPage googleSearchPage = new GoogleSearchPage(driver);
 
@@ -48,36 +52,28 @@ public class MainPageTest {
         List<String> searchItemList  = googleResultOfSearchPage.getTextListOfEachResultSearchItem();
 
         for (String eachElementFromSearchList: searchItemList) {
-            boolean ifcontains = eachElementFromSearchList.contains("ITEA");
+            boolean ifcontains = StringUtils.containsIgnoreCase(eachElementFromSearchList, "ITEA");
             Assert.assertTrue(ifcontains, "Not all search results contains search term");
         }
 
+        googleResultOfSearchPage.changeSearchResultPage(2);
 
+        Assert.assertEquals(googleResultOfSearchPage.getResultSearchCount(),expectedSearchResultsOnFirstPage, "Expected numbers of search result isnt same to Actual");
 
+        List<String> searchItemList2  = googleResultOfSearchPage.getTextListOfEachResultSearchItem();
 
-
+        for (String eachElementFromSearchList: searchItemList2) {
+            boolean ifcontains = StringUtils.containsIgnoreCase(eachElementFromSearchList, "ITEA");
+            Assert.assertTrue(ifcontains, "Not all search results contains search term");
+        }
 
     }
-
-
-
-
-
-
-
-
-
 
     /**
      * Common method that performed after each test method, to close browser window
      */
-    // Run this method after all the test methods in the current class have been run
     @AfterMethod
     public  void closeWindow(){
         driver.quit();
     }
-
-
-
-
 }
